@@ -1,0 +1,57 @@
+# === Node / Package Manager ===
+node_modules/
+.pnpm-store/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# === Build Artifacts ===
+dist/
+dist-ssr/
+build/
+.cache/
+.next/
+out/
+.output/
+.nitro/
+.vinxi/
+.turbo/
+.tanstack/
+.wrangler/
+
+# === Database & Prisma ===
+*.db
+*.sqlite
+*.sqlite-journal
+/packages/db/generated/
+/packages/db/prisma/generated/
+
+# === Environment Files ===
+.env
+.env.*
+!.env.example
+*.local
+
+# === Logs ===
+*.log
+logs/
+count.txt
+todos.json
+
+# === OS Files ===
+.DS_Store
+Thumbs.db
+
+# === IDE / Editor ===
+.idea/
+*.swp
+*.swo
+
+# === TypeScript ===
+*.tsbuildinfo
+
+# === Misc ===
+coverage/
+.tmp/
+.temp/
+.cache/

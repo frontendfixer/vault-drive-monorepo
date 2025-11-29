@@ -1,0 +1,266 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Account {
+  id                       String  @id
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  access_token             String? @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
+  refresh_token_expires_in Int?
+  users                    users   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId], map: "Account_userId_fkey")
+}
+
+model Session {
+  id           String   @id
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  users        users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "Session_userId_fkey")
+}
+
+model admin_aws_credentials {
+  id        String                       @id
+  type      admin_aws_credentials_type   @default(AWS_USER)
+  value     String                       @db.Text
+  status    admin_aws_credentials_status @default(ACTIVE)
+  createdAt DateTime                     @default(now())
+  updatedAt DateTime
+
+  @@map("admin-aws-credentials")
+}
+
+model admin_users {
+  id        String   @id
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  users     users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("admin-users")
+}
+
+model system_settings {
+  id    String @id
+  key   String @unique
+  value String
+
+  @@map("system-settings")
+}
+
+model user_aws_credentials {
+  id          String   @id
+  userId      String   @unique
+  region      String
+  credentials String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  users       users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user-aws-credentials")
+}
+
+model user_aws_setup_status {
+  id        String                       @id
+  userId    String
+  stepData  String                       @db.Text
+  step      user_aws_setup_status_step   @default(AWS_USER_CREATION)
+  status    user_aws_setup_status_status @default(PENDING)
+  createdAt DateTime                     @default(now())
+  updatedAt DateTime
+  users     users                        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "user-aws-setup-status_userId_fkey")
+  @@map("user-aws-setup-status")
+}
+
+model user_files {
+  id                String              @id
+  key               String
+  name              String
+  folderId          String?
+  ownerId           String
+  size              BigInt              @default(0)
+  mimeType          String
+  category          String
+  status            user_files_status   @default(ACTIVE)
+  createdAt         DateTime            @default(now())
+  deletedAt         DateTime?
+  updatedAt         DateTime            @default(now())
+  user_folders      user_folders?       @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  users             users               @relation(fields: [ownerId], references: [id])
+  user_locked_files user_locked_files[]
+
+  @@index([category])
+  @@index([folderId])
+  @@index([id])
+  @@index([key])
+  @@index([ownerId])
+  @@index([status])
+  @@map("user-files")
+}
+
+model user_folders {
+  id                  String               @id
+  name                String
+  fullPath            String
+  totalSize           BigInt               @default(0)
+  totalFiles          Int                  @default(0)
+  parentId            String?
+  ownerId             String
+  createdAt           DateTime             @default(now())
+  deletedAt           DateTime?
+  status              user_folders_status  @default(ACTIVE)
+  updatedAt           DateTime             @default(now())
+  user_files          user_files[]
+  users               users                @relation(fields: [ownerId], references: [id])
+  user_locked_folders user_locked_folders?
+
+  @@index([fullPath])
+  @@index([id])
+  @@index([ownerId])
+  @@index([parentId])
+  @@index([status])
+  @@map("user-folders")
+}
+
+model user_locked_files {
+  id         String     @id
+  fileId     String
+  userId     String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime
+  user_files user_files @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  users      users      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([fileId])
+  @@index([userId])
+  @@map("user-locked-files")
+}
+
+model user_locked_folders {
+  id           String       @id
+  folderId     String       @unique
+  userId       String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime
+  user_folders user_folders @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  users        users        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([folderId])
+  @@index([userId])
+  @@map("user-locked-folders")
+}
+
+model user_settings {
+  id                     String   @id
+  userId                 String   @unique
+  privacyPassword        String?
+  defaultDragOperation   String   @default("move")
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime
+  privacyPasswordTimeout Int      @default(900)
+  users                  users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user-settings")
+}
+
+model users {
+  id                    String                  @id
+  name                  String
+  username              String                  @unique
+  email                 String                  @unique
+  emailVerified         DateTime?
+  password              String?
+  image                 String?                 @db.Text
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime
+  isAllowed             Boolean                 @default(false)
+  Account               Account[]
+  Session               Session[]
+  admin_users           admin_users?
+  user_aws_credentials  user_aws_credentials?
+  user_aws_setup_status user_aws_setup_status[]
+  user_files            user_files[]
+  user_folders          user_folders[]
+  user_locked_files     user_locked_files[]
+  user_locked_folders   user_locked_folders[]
+  user_settings         user_settings?
+
+  @@index([email, username])
+}
+
+model verification_tokens {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum admin_aws_credentials_type {
+  AWS_USER
+  AWS_POLICY
+  AWS_LAMBDA_FUNCTION
+
+  @@map("admin-aws-credentials_type")
+}
+
+enum admin_aws_credentials_status {
+  ACTIVE
+  DELETED
+
+  @@map("admin-aws-credentials_status")
+}
+
+enum user_aws_setup_status_step {
+  AWS_USER_CREATION
+  AWS_BUCKET_CREATION
+  AWS_LAMBDA_FUNCTION_CREATION
+
+  @@map("user-aws-setup-status_step")
+}
+
+enum user_aws_setup_status_status {
+  PENDING
+  COMPLETED
+  CANCELLED
+
+  @@map("user-aws-setup-status_status")
+}
+
+enum user_files_status {
+  ACTIVE
+  PENDING
+  TRASHED
+  DELETED
+
+  @@map("user-files_status")
+}
+
+enum user_folders_status {
+  ACTIVE
+  TRASHED
+  DELETED
+
+  @@map("user-folders_status")
+}
