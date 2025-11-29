@@ -8,14 +8,14 @@ Browse, upload, move, and manage files stored in **AWS S3**, with a seamless web
 
 ## 🚀 Tech Stack
 
-| Layer | Tech |
-|-------|------|
+| Layer              | Tech                                                                                   |
+| ------------------ | -------------------------------------------------------------------------------------- |
 | **Frontend (Web)** | [TanStack Start](https://tanstack.com/start) + [Tailwind CSS](https://tailwindcss.com) |
-| **Backend (API)** | [NestJS](https://nestjs.com) + [Prisma ORM](https://www.prisma.io) |
-| **Database** | MySQL |
-| **Storage** | AWS S3 |
-| **Monorepo Tools** | [Turborepo](https://turbo.build/repo) + [pnpm](https://pnpm.io) |
-| **Language** | TypeScript |
+| **Backend (API)**  | [NestJS](https://nestjs.com) + [Prisma ORM](https://www.prisma.io)                     |
+| **Database**       | MySQL                                                                                  |
+| **Storage**        | AWS S3                                                                                 |
+| **Monorepo Tools** | [Turborepo](https://turbo.build/repo) + [pnpm](https://pnpm.io)                        |
+| **Language**       | TypeScript                                                                             |
 
 ---
 
@@ -92,6 +92,7 @@ pnpm turbo db:migrate
 ### 5️⃣ Run Development Servers
 
 #### Start both apps in parallel:
+
 ```bash
 pnpm dev
 ```
@@ -119,31 +120,32 @@ pnpm build
 ### 7️⃣ Deploy
 
 You can deploy:
-- **Frontend** → Vercel / Netlify  
-- **Backend** → AWS EC2 / Lambda / Docker  
-- **Database** → AWS RDS or PlanetScale  
+
+- **Frontend** → Vercel / Netlify
+- **Backend** → AWS EC2 / Lambda / Docker
+- **Database** → AWS RDS or PlanetScale
 - **Storage** → AWS S3
 
 ---
 
 ## 🧩 Shared Packages
 
-| Package | Description |
-|----------|-------------|
-| `@repo/db` | Prisma client & database access layer |
-| `@repo/typescript-config` | Shared TypeScript configuration |
+| Package                   | Description                           |
+| ------------------------- | ------------------------------------- |
+| `@repo/db`                | Prisma client & database access layer |
+| `@repo/typescript-config` | Shared TypeScript configuration       |
 
 ---
 
 ## 🧰 Common Commands
 
-| Command | Description |
-|----------|-------------|
-| `pnpm dev` | Run all dev servers concurrently |
-| `pnpm build` | Build all packages & apps |
-| `pnpm lint` | Run ESLint across all workspaces |
-| `pnpm turbo db:generate` | Generate Prisma client |
-| `pnpm turbo db:migrate` | Run DB migrations |
+| Command                  | Description                      |
+| ------------------------ | -------------------------------- |
+| `pnpm dev`               | Run all dev servers concurrently |
+| `pnpm build`             | Build all packages & apps        |
+| `pnpm lint`              | Run ESLint across all workspaces |
+| `pnpm turbo db:generate` | Generate Prisma client           |
+| `pnpm turbo db:migrate`  | Run DB migrations                |
 
 ---
 
@@ -152,7 +154,7 @@ You can deploy:
 - Prisma client is generated inside `packages/db/generated/`
 - Import `prisma` anywhere via:
   ```ts
-  import { prisma } from '@repo/db';
+  import { prisma } from "@repo/db";
   ```
 
 ---

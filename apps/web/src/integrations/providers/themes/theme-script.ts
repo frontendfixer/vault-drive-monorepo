@@ -16,7 +16,10 @@ export const script: (...args: Array<any>) => void = (
   const el = document.documentElement;
   const systemThemes = ['light', 'dark'];
   const isClass = attribute === 'class';
-  const classes = isClass && value ? themes.map((t: string | number) => value[t] || t) : themes;
+  const classes =
+    isClass && value
+      ? themes.map((t: string | number) => value[t] || t)
+      : themes;
 
   function updateDOM(theme: string) {
     if (isClass) {
@@ -36,7 +39,9 @@ export const script: (...args: Array<any>) => void = (
   }
 
   function getSystemTheme() {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
   }
 
   if (forcedTheme) {

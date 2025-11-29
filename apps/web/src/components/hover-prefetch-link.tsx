@@ -1,17 +1,17 @@
-import { Link } from '@tanstack/react-router'
-import { useState } from 'react'
+import { Link } from '@tanstack/react-router';
+import { useState } from 'react';
 
 export function HoverPrefetchLink({
-	...props
+  ...props
 }: React.ComponentProps<typeof Link>) {
-	const [active, setActive] = useState(false)
+  const [active, setActive] = useState(false);
 
-	return (
-		<Link
-			preload={active ? 'intent' : undefined}
-			onMouseEnter={() => setActive(true)}
-			onMouseLeave={() => setActive(false)}
-			{...props}
-		/>
-	)
+  return (
+    <Link
+      preload={active ? 'intent' : undefined}
+      onMouseEnter={() => setActive(true)}
+      onMouseLeave={() => setActive(false)}
+      {...props}
+    />
+  );
 }

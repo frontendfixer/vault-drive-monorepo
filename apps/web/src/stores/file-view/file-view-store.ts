@@ -30,10 +30,10 @@ export const createFileViewStore = (
 ) =>
   createStore<FileViewStore>()(
     persist(
-      set => ({
+      (set) => ({
         ...initialState,
-        setView: view => set({ view }),
-        setGridIconSize: size =>
+        setView: (view) => set({ view }),
+        setGridIconSize: (size) =>
           set({
             gridIconSize: size,
           }),
