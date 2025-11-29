@@ -3,22 +3,26 @@
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": ["^format", "^build"],
+      "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": ["dist/**", "build/**"]
+      "outputs": ["dist/**", "build/**", ".output/**"]
     },
+
     "lint": {
       "dependsOn": ["^lint"],
       "cache": false
     },
+
     "lint:fix": {
       "dependsOn": ["^lint:fix"],
       "cache": false
     },
+
     "format": {
-      "dependsOn": ["^lint:fix"],
+      "dependsOn": ["^format"],
       "cache": false
     },
+
     "dev": {
       "cache": false,
       "persistent": true
@@ -31,6 +35,7 @@
       "cache": false,
       "persistent": true
     },
+
     "start": {
       "dependsOn": ["^build"],
       "cache": false,

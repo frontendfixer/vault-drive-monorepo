@@ -1,0 +1,17 @@
+# Lockfiles
+package-lock.json
+pnpm-lock.yaml
+
+# TanStack Start generated file
+routeTree.gen.ts
+
+# Prisma generated client
+prisma/generated
+apps/api/prisma/generated
+
+# Build outputs
+dist
+build
+
+# Node
+node_modules
